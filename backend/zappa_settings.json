@@ -9,7 +9,6 @@
             "s3transfer",
             "concurrent"
         ],
-        "profile_name": "s3-read",
         "project_name": "backend",
         "runtime": "python3.10",
         "s3_bucket": "simple-react-web"
