@@ -34,7 +34,7 @@ def hello():
 
 
 
-@app.route('/api/delete/<string:item_id>', methods=['DELETE'])
+@app.route('/api/delete/<int:item_id>', methods=['DELETE'])
 def delete_item(item_id):
     try:
         # DynamoDB 테이블에서 아이템 삭제
