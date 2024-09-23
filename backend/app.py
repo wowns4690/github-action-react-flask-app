@@ -41,15 +41,17 @@ def delete_item(item_id):
         response = table.delete_item(
             Key={
                 'id': item_id  # 'id'를 실제 기본 키 속성 이름으로 교체하세요
-            }
+            },
+            ReturnValues='ALL_OLD'  # 삭제된 항목의 이전 값을 반환
         )
-        # 삭제가 성공적으로 이루어졌는지 확인
-        if response.get('Attributes'):
+        # 삭제된 항목의 속성이 반환되었는지 확인
+        if 'Attributes' in response:
             return jsonify({"message": "아이템이 성공적으로 삭제되었습니다."}), 200
         else:
             return jsonify({"message": "아이템을 찾을 수 없습니다."}), 404
     except ClientError as e:
         return jsonify({"error": str(e)}), 500
+
 
 if __name__ == '__main__':
     app.run(debug=True)
