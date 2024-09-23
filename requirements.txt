@@ -2,3 +2,4 @@ flask
 flask-cors
 zappa
 boto3
+pytest
