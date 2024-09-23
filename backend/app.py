@@ -27,36 +27,27 @@ def get_list():
         return jsonify({"error":str(e)}), 500
 
 # Update 항목
-@app.route('/api/update/<int:item_id>', methods=['PUT'])
-def update_item(item_id):
-    data = request.get_json()  # 클라이언트에서 전송한 JSON 데이터
-    if not data:
-        return jsonify({"message": "업데이트할 데이터가 없습니다."}), 400
+@app.route("/api/diaries/<int:diary_id>", methods=['PUT'])
+def update_diary(diary_id):
+    data = request.json
+    diary = table.get_item(Key={'id':diary_id}).get('Item')
 
-    try:
-        # DynamoDB 테이블에서 항목 업데이트
-        response = table.update_item(
-            Key={
-                'id': item_id  # 'id'를 실제 기본 키 속성 이름으로 교체하세요
-            },
-            UpdateExpression="set #name = :name, age = :age",  # name과 age 필드를 업데이트
-            ExpressionAttributeNames={
-                '#name': 'name'
-            },
-            ExpressionAttributeValues={
-                ':name': data.get('name'),
-                ':age': data.get('age')
-            },
-            ReturnValues='ALL_NEW'  # 업데이트된 항목의 새 값을 반환
-        )
+    # 만약에 수정할 다이어리가 없다면, Diary not Found 에러 반환, 응답코드 404
+    if diary is None:
+        return jsonify({'error': 'Diary not found'}), 404
 
-        # 업데이트된 항목의 속성이 반환되었는지 확인
-        if 'Attributes' in response:
-            return jsonify({"message": "아이템이 성공적으로 업데이트되었습니다.", "updated_item": response['Attributes']}), 200
-        else:
-            return jsonify({"message": "아이템을 찾을 수 없습니다."}), 404
-    except ClientError as e:
-        return jsonify({"error": str(e)}), 500
+    # diary 변수 업데이트
+    if 'title' in data:
+        diary['title'] = data['title']
+
+    if 'content' in data:
+        diary['content'] = data['content']
+
+    # diaries 딕셔너리 전역변수 업데이트
+    table.put_item(Item=diary)
+
+    # json 형식으로 업데이트된 다이어리 반환, 응답코드 200(기본값)
+    return jsonify(diary)
 
 # Delete 항목
 @app.route('/api/delete/<int:item_id>', methods=['DELETE'])
