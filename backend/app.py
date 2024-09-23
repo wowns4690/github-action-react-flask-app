@@ -17,13 +17,14 @@ dynamodb = boto3.resource(
 table = dynamodb.Table('crud-table')
 
 def get_next_id():
+    next_id = 0
     response = table.scan()
     if 'Items' in response and len(response['Items']) > 0:
         ids = max([item['id'] for item in response['Items']])
-        return ids + 1
-    return 1
+        next_id = ids + 1
+        return  next_id
+    return next_id
 
-next_id = get_next_id()
 
 #DB crud-table 항목 가져오기
 @app.route('/api/list', methods=['GET'])
@@ -37,7 +38,7 @@ def get_list():
 
 @app.route("/api/diaries", methods=['POST'])
 def create_diary():
-    global next_id
+    next_id = get_list()
     data = request.json
 
     if 'title' not in data or 'content' not in data:
