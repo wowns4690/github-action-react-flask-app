@@ -16,6 +16,8 @@ dynamodb = boto3.resource(
 # DynamoDB 테이블 설정
 table = dynamodb.Table('crud-table')
 
+
+# DB crud-table 항목 가져오기
 def get_next_id():
     next_id = 0
     response = table.scan()
@@ -36,6 +38,30 @@ def get_list():
     except ClientError as e:
         return jsonify({"error":str(e)}), 500
 
+
+# Update 항목
+@app.route("/api/diaries/<int:diary_id>", methods=['PUT'])
+def update_diary(diary_id):
+    data = request.json
+    diary = table.get_item(Key={'id':diary_id}).get('Item')
+
+    # 만약에 수정할 다이어리가 없다면, Diary not Found 에러 반환, 응답코드 404
+    if diary is None:
+        return jsonify({'error': 'Diary not found'}), 404
+
+    # diary 변수 업데이트
+    if 'title' in data:
+        diary['title'] = data['title']
+
+    if 'content' in data:
+        diary['content'] = data['content']
+
+    # diaries 딕셔너리 전역변수 업데이트
+    table.put_item(Item=diary)
+
+    # json 형식으로 업데이트된 다이어리 반환, 응답코드 200(기본값)
+    return jsonify(diary)
+
 @app.route("/api/diaries", methods=['POST'])
 def create_diary():
     next_id = get_next_id()
@@ -54,9 +80,11 @@ def create_diary():
     next_id += 1
     return jsonify(diary), 201
 
+
+# 기본 Hello API
 @app.route('/api/hello', methods=['GET'])
 def hello():
-    return jsonify(message="Hello, World!!!!!")
+    return jsonify(message="Hello, World!!!!!!!!!!!!")
 
 
 
