@@ -12,6 +12,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      
+      - name: Cache node modules
+        uses: actions/cache@v2
+        with:
+          path: frontend/node_modules  # 캐싱할 폴더 경로
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}  # 캐시 키 설정
+          restore-keys: |
+            ${{ runner.os }}-node-
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
