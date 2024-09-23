@@ -1,7 +1,7 @@
 name: Deploy Frontend to S3
 
 on:
-  push:
+  pull_request:
     branches:
       - master  # main 브랜치에 푸시할 때 트리거
 
