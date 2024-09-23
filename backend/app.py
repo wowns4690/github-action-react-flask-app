@@ -1,5 +1,5 @@
 import os
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 import boto3
 from botocore.exceptions import ClientError
@@ -16,6 +16,16 @@ dynamodb = boto3.resource(
 # DynamoDB 테이블 설정
 table = dynamodb.Table('crud-table')
 
+def get_next_id():
+    next_id = 0
+    response = table.scan()
+    if 'Items' in response and len(response['Items']) > 0:
+        ids = max([item['id'] for item in response['Items']])
+        next_id = ids + 1
+        return  next_id
+    return next_id
+
+
 #DB crud-table 항목 가져오기
 @app.route('/api/list', methods=['GET'])
 def get_list():
@@ -26,7 +36,23 @@ def get_list():
     except ClientError as e:
         return jsonify({"error":str(e)}), 500
 
+@app.route("/api/diaries", methods=['POST'])
+def create_diary():
+    next_id = get_list()
+    data = request.json
 
+    if 'title' not in data or 'content' not in data:
+        return jsonify({'error': 'Title and content are required'}), 400
+    
+    diary = {
+        'id': next_id,
+        'title': data['title'],
+        'content': data['content']
+    }
+
+    table.put_item(Item=diary)
+    next_id += 1
+    return jsonify(diary), 201
 
 @app.route('/api/hello', methods=['GET'])
 def hello():
