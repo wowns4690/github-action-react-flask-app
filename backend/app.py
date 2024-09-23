@@ -84,7 +84,7 @@ def create_diary():
 # 기본 Hello API
 @app.route('/api/hello', methods=['GET'])
 def hello():
-    return jsonify(message="Hello, World!!!!!!!!!!!!")
+    return jsonify(message="Hello, World!, cache test")
 
 
 
