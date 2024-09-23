@@ -11,10 +11,11 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       
       - name: Cache node modules
-        uses: actions/cache@v2
+        uses: actions/cache@v4
+        id: npm-cache # use this to check for `cache-hit` ==> if: steps.npm-cache.outputs.cache-hit != 'true'
         with:
           path: frontend/node_modules  # 캐싱할 폴더 경로
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}  # 캐시 키 설정
@@ -22,7 +23,7 @@ jobs:
             ${{ runner.os }}-node-
 
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: '16'  # Node.js 버전
 
