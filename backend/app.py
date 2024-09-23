@@ -40,7 +40,7 @@ def delete_item(item_id):
         # DynamoDB 테이블에서 아이템 삭제
         response = table.delete_item(
             Key={
-                'id': item_id  # 'id'를 실제 기본 키 속성 이름으로 교체하세요
+                'id': id  # 'id'를 실제 기본 키 속성 이름으로 교체하세요
             }
         )
         # 삭제가 성공적으로 이루어졌는지 확인
