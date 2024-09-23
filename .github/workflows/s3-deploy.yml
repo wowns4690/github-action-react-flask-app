@@ -22,6 +22,7 @@ jobs:
         run: |
             cd frontend
             npm install
+            npm install axios
 
       - name: Build project
         run: |
