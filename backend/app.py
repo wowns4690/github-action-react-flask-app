@@ -38,7 +38,7 @@ def get_list():
 
 @app.route("/api/diaries", methods=['POST'])
 def create_diary():
-    next_id = get_list()
+    next_id = get_next_id()
     data = request.json
 
     if 'title' not in data or 'content' not in data:
