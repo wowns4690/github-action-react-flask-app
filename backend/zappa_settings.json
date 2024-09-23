@@ -11,7 +11,7 @@
         ],
         "project_name": "backend",
         "runtime": "python3.10",
-        "s3_bucket": "simple-react-web",
+        "s3_bucket": "simple-flask-web",
         "environment_variables": {
             "DYNAMODB_TABLE": "crud-table"
         }
