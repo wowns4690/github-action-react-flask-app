@@ -19,7 +19,9 @@ jobs:
           node-version: '16'  # Node.js 버전
 
       - name: Install dependencies
-        run: npm install
+        run: |
+            cd frontend
+            npm install
 
       - name: Build project
         run: npm run build
