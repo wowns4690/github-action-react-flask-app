@@ -31,9 +31,9 @@ jobs:
       - name: Deploy to S3
         uses: jakejarvis/s3-sync-action@v0.5.1
         with:
-          bucket: 'simple-react-web'
           args: --delete  # S3와 로컬 파일 동기화 (삭제 포함)
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: 'ap-northeast-2'  # 배포할 AWS 리전
+          AWS_S3_BUCKET: 'simple-react-web'  # S3 버킷 이름을 명시적으로 설정
