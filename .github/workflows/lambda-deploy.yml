@@ -3,7 +3,7 @@ name: Deploy Backend to AWS Lambda
 on:
   push:
     branches:
-      - main  # main 브랜치에 푸시할 때 트리거
+      - master  # main 브랜치에 푸시할 때 트리거
 
 jobs:
   deploy:
