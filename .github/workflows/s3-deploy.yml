@@ -32,6 +32,7 @@ jobs:
         uses: jakejarvis/s3-sync-action@v0.5.1
         with:
           args: --delete  # S3와 로컬 파일 동기화 (삭제 포함)
+          source_dir: frontend/build  # 빌드 폴더 경로를 지정
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
