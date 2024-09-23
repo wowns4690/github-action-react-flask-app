@@ -7,16 +7,10 @@ from botocore.exceptions import ClientError
 app = Flask(__name__)
 CORS(app)
 
-# AWS 자격 증명을 환경 변수에서 가져옴
-AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
-
 # AWS DynamoDB 클라이언트 설정
 dynamodb = boto3.resource(
     'dynamodb',
-    region_name='ap-northeast-2',  # AWS 리전 설정
-    aws_access_key_id=AWS_ACCESS_KEY_ID,  # 환경 변수로부터 가져온 AWS 액세스 키
-    aws_secret_access_key=AWS_SECRET_ACCESS_KEY  # 환경 변수로부터 가져온 AWS 시크릿 키
+    region_name='ap-northeast-2'  # AWS 리전 설정
 )
 
 # DynamoDB 테이블 설정
